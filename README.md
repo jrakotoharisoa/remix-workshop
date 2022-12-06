@@ -10,11 +10,11 @@ Voyons à travers cet atelier, comment Remix nous permet de répondre à cela to
 Nous verrons à travers cet atelier les concepts de base tels que le chargement et la soumission de données mais aussi des concepts plus avancées, comme l'optimistic UI, l'authentification ou la gestion de plusieurs formulaires sur une page.
 
 
-Pour cela nous développerons une application qui grâce à Remix:
-- avec du progressive enhancement 
+Pour cela nous développerons une application qui grâce à Remix sera:
 - typée de bout en bout,
 - basée sur les standards du web 
 - accessible et référençable par les moteurs de recherche
+- interactive dès le chargement de la page
 
 
 On vous attends nombreux et surtout n'oubliez pas votre ordinateur !
