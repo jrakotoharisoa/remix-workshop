@@ -4,20 +4,16 @@
 - Remix workshop
 
 ## Pitch
-Fournir une belle expérience aux utilisateurs de nos applications est un enjeu important aujourd'hui. Et la réponse à cela ne se limite pas uniquement à la partie front-end de nos applications. 
-Voyons à travers cet atelier, comment Remix nous permet de répondre à cela tout préservant une super expérience développeur.
+Fournir une belle expérience aux utilisateurs de nos applications est un enjeu important et la solution ne se limite pas uniquement à la partie front-end de nos applications. Durant cet atelier, nous verrons comment Remix nous permet de répondre à cette problématique tout en offrant une super expérience développeur.
 
-Nous verrons à travers cet atelier les concepts de base tels que le chargement et la soumission de données mais aussi des concepts plus avancées, comme l'optimistic UI, l'authentification ou la gestion de plusieurs formulaires sur une page.
+De la découverte des concepts de base tels que le chargement et la soumission des données, jusqu'à certains concepts plus avancés, comme l'optimistic UI, l'authentification ou la gestion de plusieurs formulaires sur une page, nous développerons une application qui sera, grâce à Remix :
 
-
-Pour cela nous développerons une application qui grâce à Remix sera:
 - typée de bout en bout,
-- basée sur les standards du web 
+- basée sur les standards du web
 - accessible et référençable par les moteurs de recherche
 - interactive dès le chargement de la page
 
-
-On vous attends nombreux et surtout n'oubliez pas votre ordinateur !
+On vous attend nombreux et surtout n'oubliez pas votre ordinateur !
 
 #### Pré-requis
 - Syntaxe Javascript
