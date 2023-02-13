@@ -1,27 +1,16 @@
-import { LoaderArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { json, LoaderArgs } from "@remix-run/node";
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { MusicIcon } from "~/ui/icons/Music";
 import { PlaylistIcon } from "~/ui/icons/Playlist";
+import { db } from "~/utils/db.server";
 
-export const loader = ({}: LoaderArgs) => {
-  return [
-    "Recently Added",
-    "Recently Played",
-    "Top Songs",
-    "Top Albums",
-    "Top Artists",
-    "Logic Discography",
-    "Bedtime Beats",
-    "Feeling Happy",
-    "button>",
-    "Runtober",
-    "Mellow Days",
-    "Eminem Essentials",
-  ];
+export const loader = async ({}: LoaderArgs) => {
+  const playlists = await db.playlist.findMany();
+  return json({ playlists });
 };
 
 export default function Layout() {
-  const playlists = useLoaderData<typeof loader>();
+  const { playlists } = useLoaderData<typeof loader>();
 
   return (
     <div className="grid h-full grid-cols-4 xl:grid-cols-5">
@@ -42,13 +31,14 @@ export default function Layout() {
               <div>
                 <div className="space-y-1 p-2">
                   {playlists.map((playlist) => (
-                    <button
-                      key={playlist}
+                    <NavLink
+                      key={playlist.id}
+                      to={`/playlists/${playlist.id}`}
                       className="inline-flex h-9 w-full items-center justify-start rounded-md bg-transparent px-2 text-sm font-normal transition-colors hover:bg-slate-100  focus:outline-none  focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-transparent"
                     >
                       <PlaylistIcon className="mr-2 h-4 w-4" />
-                      {playlist}
-                    </button>
+                      {playlist.name}
+                    </NavLink>
                   ))}
                 </div>
               </div>
