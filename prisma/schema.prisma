@@ -16,6 +16,7 @@ model Track {
   updatedAt DateTime   @updatedAt
   name      String
   artist    String
+  cover     String
   playlists Playlist[]
 }
 
