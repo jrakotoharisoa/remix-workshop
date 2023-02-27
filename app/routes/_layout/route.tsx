@@ -24,10 +24,7 @@ export default function Layout() {
         <div className="py-2 px-8">
           <h2 className="title-2">Playlists </h2>
           <div dir="ltr" className="relative overflow-hidden ">
-            <div
-              data-radix-scroll-area-viewport=""
-              className="h-full w-full rounded-[inherit]"
-            >
+            <div data-radix-scroll-area-viewport="" className="h-full w-full rounded-[inherit]">
               <div>
                 <div className="space-y-1 p-2">
                   {playlists.map((playlist) => (
@@ -47,7 +44,7 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="col-span-3 h-full border-l border-l-slate-200 p-6 xl:col-span-4">
+      <main className="col-span-3 h-full border-l border-l-slate-200 xl:col-span-4">
         <Outlet />
       </main>
     </div>
