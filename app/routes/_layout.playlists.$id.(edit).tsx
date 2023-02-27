@@ -20,7 +20,12 @@ export const loader = async ({ request, params: { id = "" } }: LoaderArgs) => {
   if (isEditionUrl(url.pathname)) {
     availableTracks = await tracks.findAvailableTracksNotIn(playlist.tracks);
   }
-  return json({ playlist, availableTracks });
+  return json(
+    { playlist, availableTracks },
+    {
+      headers: { "Cache-Control": "private, max-age=10" },
+    }
+  );
 };
 
 const FormDataRequestSchema = z.object({

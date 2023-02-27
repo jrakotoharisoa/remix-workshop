@@ -30,8 +30,11 @@ export default function Layout() {
                   {playlists.map((playlist) => (
                     <NavLink
                       key={playlist.id}
+                      prefetch="intent"
                       to={`/playlists/${playlist.id}`}
-                      className="inline-flex h-9 w-full items-center justify-start rounded-md bg-transparent px-2 text-sm font-normal transition-colors hover:bg-slate-100  focus:outline-none  focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-transparent"
+                      className={
+                        "inline-flex h-9 w-full items-center justify-start rounded-md bg-transparent px-2 text-sm font-normal transition-colors hover:bg-slate-100  focus:outline-none  focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-transparent"
+                      }
                     >
                       <PlaylistIcon className="mr-2 h-4 w-4" />
                       {playlist.name}
