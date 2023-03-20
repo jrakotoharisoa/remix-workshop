@@ -1,4 +1,4 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { MusicIcon } from "~/ui/icons/Music";
 import { PlaylistIcon } from "~/ui/icons/Playlist";
@@ -7,6 +7,10 @@ import { db } from "~/utils/db.server";
 export const loader = async ({}: LoaderArgs) => {
   const playlists = await db.playlist.findMany();
   return json({ playlists });
+};
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return <>{error.message}</>;
 };
 
 export default function Layout() {

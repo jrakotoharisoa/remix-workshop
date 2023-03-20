@@ -1,18 +1,21 @@
 import { Track } from "@prisma/client";
-import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
-import { Form, Link, useLoaderData, useLocation, useNavigation } from "@remix-run/react";
+import { ActionArgs, ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
+import { Form, Link, useCatch, useLoaderData, useLocation, useNavigation, CatchBoundaryComponent } from "@remix-run/react";
 import { z } from "zod";
 import { playlists } from "~/repositories/playlist-repository.server";
 import { tracks } from "~/repositories/track-repository.server";
 import { isNonUndefined } from "~/utils/type";
 
-/// TODO: gestion d'erreur avec playlist non trouvée
-
 export const loader = async ({ request, params: { id = "" } }: LoaderArgs) => {
   const playlist = await playlists.find(id);
 
   if (!playlist) {
-    throw new Error("Playlist not found");
+    // First handle it with Error boundary throwing an error,
+    // then converting it to anticipated error with Catch boundary throwing a response
+    throw new Response("PLaylist Not Found", {
+      status: 404,
+      statusText: "Not found",
+    });
   }
 
   let availableTracks: Track[] = [];
@@ -44,6 +47,15 @@ export const action = async ({ request, params: { id = "" } }: ActionArgs) => {
   }
 
   return null;
+};
+
+export const CatchBoundary: CatchBoundaryComponent = () => {
+  const caught = useCatch();
+  return (
+    <>
+      {caught.status} - {caught.statusText} - {caught.data}
+    </>
+  );
 };
 
 export default function Playlist() {
