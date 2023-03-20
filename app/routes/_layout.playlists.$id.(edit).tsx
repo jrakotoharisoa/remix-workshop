@@ -81,7 +81,16 @@ export default function Playlist() {
   return (
     <div className="flex h-screen flex-col p-6">
       <h1 className="title-1">{playlist?.name}</h1>
-      {isEditionMode ? <Link to="./..">Done</Link> : <Link to="./edit">Edit</Link>}
+      {isEditionMode ? (
+        <Link to="./..">Done</Link>
+      ) : (
+        <>
+          <Link to={`/api/playlists/${playlist.id}.json`} reloadDocument download>
+            Download as JSON
+          </Link>
+          <Link to="./edit">Edit</Link>
+        </>
+      )}
       <div className=" flex min-h-0 flex-1 space-x-4">
         <ul className="flex-1 overflow-auto">
           {playlist?.tracks.map((track) => (
