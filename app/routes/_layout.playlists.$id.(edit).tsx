@@ -1,14 +1,14 @@
 import { Track } from "@prisma/client";
-import { ActionArgs, ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
+import { ActionArgs, ErrorBoundaryComponent, json, LoaderArgs, redirect } from "@remix-run/node";
 import { Form, Link, useCatch, useLoaderData, useLocation, useNavigation, CatchBoundaryComponent } from "@remix-run/react";
 import { z } from "zod";
 import { playlists } from "~/repositories/playlist-repository.server";
 import { tracks } from "~/repositories/track-repository.server";
 import { isNonUndefined } from "~/utils/type";
+import { commitSession, getSession } from "~/utils/user-session.server";
 
 export const loader = async ({ request, params: { id = "" } }: LoaderArgs) => {
   const playlist = await playlists.find(id);
-
   if (!playlist) {
     // First handle it with Error boundary throwing an error,
     // then converting it to anticipated error with Catch boundary throwing a response
@@ -20,13 +20,21 @@ export const loader = async ({ request, params: { id = "" } }: LoaderArgs) => {
 
   let availableTracks: Track[] = [];
   const url = new URL(request.url);
+  const session = await getSession(request.headers.get("Cookie"));
+
   if (isEditionUrl(url.pathname)) {
+    if (!session.has("username")) {
+      return redirect(`/login?from=${url.pathname}`);
+    }
+
     availableTracks = await tracks.findAvailableTracksNotIn(playlist.tracks);
   }
+
+  const welcomeMessage: string | undefined = session.get("welcome");
   return json(
-    { playlist, availableTracks },
+    { playlist, welcomeMessage, availableTracks },
     {
-      headers: { "Cache-Control": "private, max-age=10" },
+      headers: { "Cache-Control": "private, max-age=10", "Set-Cookie": await commitSession(session) },
     }
   );
 };
@@ -59,7 +67,7 @@ export const CatchBoundary: CatchBoundaryComponent = () => {
 };
 
 export default function Playlist() {
-  const { playlist: serverPlaylist, availableTracks: serverAvailableTracks } = useLoaderData<typeof loader>();
+  const { playlist: serverPlaylist, availableTracks: serverAvailableTracks, welcomeMessage } = useLoaderData<typeof loader>();
   const location = useLocation();
   const navigation = useNavigation();
   const formData = navigation.formData ? FormDataRequestSchema.parse(Object.fromEntries(navigation.formData)) : undefined;
@@ -79,8 +87,9 @@ export default function Playlist() {
   const isEditionMode = isEditionUrl(location.pathname);
 
   return (
-    <div className="flex h-screen flex-col p-6">
+    <div className="flex h-screen flex-col px-6 py-3">
       <h1 className="title-1">{playlist?.name}</h1>
+      {welcomeMessage && <div className="w-full bg-lime-200 p-4">{welcomeMessage}</div>}
       {isEditionMode ? (
         <Link to="./..">Done</Link>
       ) : (
