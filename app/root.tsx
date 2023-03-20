@@ -21,6 +21,7 @@ export default function App() {
       <body>
         <Outlet />
         <ScrollRestoration />
+        {/* TODO Remove script for start project */}
         <Scripts />
         <LiveReload />
       </body>
