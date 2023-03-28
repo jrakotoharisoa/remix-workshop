@@ -1,7 +1,7 @@
-import { ActionArgs, json, LoaderArgs, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { ActionArgs, json, redirect } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 import { z } from "zod";
-import { getSession, commitSession } from "~/utils/user-session.server";
+import { commitSession, getSession } from "~/utils/user-session.server";
 
 const LoginRequestSchema = z.object({
   username: z.string().min(1),
@@ -10,7 +10,6 @@ const LoginRequestSchema = z.object({
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
-  console.log({ formData });
   const url = new URL(request.url);
   const userSession = await getSession(request.headers.get("Cookie"));
   const parsedResult = LoginRequestSchema.safeParse(Object.fromEntries(formData));

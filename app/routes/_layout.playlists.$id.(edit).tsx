@@ -1,6 +1,6 @@
 import { Track } from "@prisma/client";
-import { ActionArgs, ErrorBoundaryComponent, json, LoaderArgs, redirect } from "@remix-run/node";
-import { Form, Link, useCatch, useLoaderData, useLocation, useNavigation, CatchBoundaryComponent } from "@remix-run/react";
+import { ActionArgs, json, LoaderArgs, redirect } from "@remix-run/node";
+import { Form, isRouteErrorResponse, Link, useLoaderData, useLocation, useNavigation, useRouteError } from "@remix-run/react";
 import { z } from "zod";
 import { playlists } from "~/repositories/playlist-repository.server";
 import { tracks } from "~/repositories/track-repository.server";
@@ -10,9 +10,7 @@ import { commitSession, getSession } from "~/utils/user-session.server";
 export const loader = async ({ request, params: { id = "" } }: LoaderArgs) => {
   const playlist = await playlists.find(id);
   if (!playlist) {
-    // First handle it with Error boundary throwing an error,
-    // then converting it to anticipated error with Catch boundary throwing a response
-    throw new Response("PLaylist Not Found", {
+    throw new Response("Playlist not found", {
       status: 404,
       statusText: "Not found",
     });
@@ -57,11 +55,17 @@ export const action = async ({ request, params: { id = "" } }: ActionArgs) => {
   return null;
 };
 
-export const CatchBoundary: CatchBoundaryComponent = () => {
-  const caught = useCatch();
+export const ErrorBoundary = () => {
+  const error = useRouteError();
+
+  if (!isRouteErrorResponse(error)) {
+    throw error;
+  }
+
   return (
     <>
-      {caught.status} - {caught.statusText} - {caught.data}
+      <p>HTTP status: {error.status}</p>
+      <p>{error.data}</p>
     </>
   );
 };

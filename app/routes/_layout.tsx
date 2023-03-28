@@ -1,10 +1,11 @@
-import { ErrorBoundaryComponent, json, LoaderArgs, ActionArgs, redirect } from "@remix-run/node";
-import { Form, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { json, LoaderArgs } from "@remix-run/node";
+import { Form, NavLink, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
+import { z } from "zod";
 import { ExitIcon } from "~/ui/icons/Exit";
 import { MusicIcon } from "~/ui/icons/Music";
 import { PlaylistIcon } from "~/ui/icons/Playlist";
 import { db } from "~/utils/db.server";
-import { destroySession, getSession } from "~/utils/user-session.server";
+import { getSession } from "~/utils/user-session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const session = await getSession(request.headers.get("Cookie"));
@@ -13,8 +14,12 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ playlists, isLogged });
 };
 
-export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
-  return <>{error.message}</>;
+const ErrorSchema = z.instanceof(Error);
+export const ErrorBoundary = () => {
+  const rawError = useRouteError();
+  const errorResult = ErrorSchema.safeParse(rawError);
+
+  return <>{errorResult.success ? errorResult.data.message : "An unexpected error occured"}</>;
 };
 
 export default function Layout() {
