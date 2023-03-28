@@ -1,6 +1,5 @@
 import { json, LoaderArgs } from "@remix-run/node";
 import { Form, NavLink, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
-import { z } from "zod";
 import { ExitIcon } from "~/ui/icons/Exit";
 import { MusicIcon } from "~/ui/icons/Music";
 import { PlaylistIcon } from "~/ui/icons/Playlist";
@@ -14,12 +13,10 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ playlists, isLogged });
 };
 
-const ErrorSchema = z.instanceof(Error);
 export const ErrorBoundary = () => {
-  const rawError = useRouteError();
-  const errorResult = ErrorSchema.safeParse(rawError);
+  const error = useRouteError();
 
-  return <>{errorResult.success ? errorResult.data.message : "An unexpected error occured"}</>;
+  return <>{error instanceof Error ? error.message : "An unexpected error occured"}</>;
 };
 
 export default function Layout() {
