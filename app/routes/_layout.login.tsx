@@ -41,9 +41,7 @@ export default function Login() {
   return (
     <div>
       <Form method="post" className="flex flex-col items-start space-y-3 px-6 py-3">
-        <div>
-          <p>Authentification</p>
-        </div>
+        <h1 className="title-1">Authentification</h1>
         <label>
           Utilisateur: <input name="username" className={twMerge("border-2", data?.errors.username && "border-rose-500")} />
         </label>
@@ -52,7 +50,9 @@ export default function Login() {
           <input type="password" className={twMerge("border-2", data?.errors.password && "border-rose-500")} name="password" />
         </label>
 
-        <button type="submit">Soumettre</button>
+        <button className="rounded-md px-3 py-1 text-center font-medium shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50" type="submit">
+          Soumettre
+        </button>
       </Form>
       {data ? <div>Result : {Object.keys(data.errors).length === 0 ? "success" : "fail"}</div> : null}
     </div>

@@ -25,21 +25,19 @@ export default function Layout() {
   return (
     <div className="grid h-full grid-cols-4 xl:grid-cols-5">
       <aside>
-        <div className="px-8 py-6">
+        <div className="flex items-center justify-between px-8 py-6">
           <p className="title-1 flex items-center space-x-2">
             <MusicIcon className="h-6 w-6" />
             <span>Remix</span>
           </p>
-          <p className="flex items-center space-x-2">
-            {isLogged && (
-              <Form method="post" action="/api/logout">
-                <button type="submit">
-                  <span className="sr-only">Logout</span>
-                  <ExitIcon className="h-6 w-6" />
-                </button>
-              </Form>
-            )}
-          </p>
+          {isLogged && (
+            <Form method="post" action="/api/logout" className="flex">
+              <button type="submit">
+                <span className="sr-only">Logout</span>
+                <ExitIcon className="h-6 w-6" />
+              </button>
+            </Form>
+          )}
         </div>
         <div className="py-2 px-8">
           <h2 className="title-2">Playlists </h2>
