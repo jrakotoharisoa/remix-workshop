@@ -1,36 +1,17 @@
 import { json, LoaderArgs } from "@remix-run/node";
-import {
-  Form,
-  NavLink,
-  Outlet,
-  useLoaderData,
-  useRouteError,
-} from "@remix-run/react";
+import { Form, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { ExitIcon } from "~/ui/icons/Exit";
 import { MusicIcon } from "~/ui/icons/Music";
 import { PlaylistIcon } from "~/ui/icons/Playlist";
 import { db } from "~/utils/db.server";
-import { getSession } from "~/utils/user-session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const session = await getSession(request.headers.get("Cookie"));
-  const isLogged = session.has("username");
   const playlists = await db.playlist.findMany();
-  return json({ playlists, isLogged });
-};
-
-export const ErrorBoundary = () => {
-  const error = useRouteError();
-
-  return (
-    <>
-      {error instanceof Error ? error.message : "An unexpected error occured"}
-    </>
-  );
+  return json({ playlists });
 };
 
 export default function Layout() {
-  const { playlists, isLogged } = useLoaderData<typeof loader>();
+  const { playlists } = useLoaderData<typeof loader>();
 
   return (
     <div className="grid h-full grid-cols-4 xl:grid-cols-5">
@@ -79,7 +60,7 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="col-span-3 h-full border-l border-l-slate-200 xl:col-span-4">
+      <main>
         <Outlet />
       </main>
     </div>

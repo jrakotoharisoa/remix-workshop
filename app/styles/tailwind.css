@@ -22,3 +22,32 @@ body {
 .subtle {
   @apply text-sm text-slate-500 dark:text-slate-400;
 }
+
+h1 {
+  @apply title-1;
+}
+
+h2 {
+  @apply title-2;
+}
+
+main {
+  @apply col-span-3 h-full border-l border-l-slate-200 xl:col-span-4;
+}
+
+main a,
+button {
+  @apply rounded-md px-3 py-1 text-center font-medium shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50;
+}
+
+input {
+  @apply border-2;
+}
+
+ul {
+  @apply space-y-2 overflow-auto p-2 pl-0;
+}
+
+li {
+  @apply flex min-h-[2rem] items-center justify-between space-x-4;
+}
