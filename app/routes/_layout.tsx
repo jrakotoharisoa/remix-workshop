@@ -47,7 +47,7 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main>
+      <main className="col-span-3 h-full border-l border-l-slate-200 xl:col-span-4">
         <Outlet />
       </main>
     </div>
